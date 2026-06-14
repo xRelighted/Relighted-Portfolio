@@ -1,417 +1,1067 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Relighted Animator</title>
+<title>Relighted — Professional Animator</title>
 <link rel="icon" type="image/jpeg" href="/favicon.jpg">
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-
-:root{
---bg:#0A0C0F;
---text:#F0F4FA;
---accent:#9AA5B1;
---panel:#111417;
---border:#2A3439;
---muted:#A0AEC0;
---ease:cubic-bezier(.23,1,.32,1);
+:root {
+  --bg: #07090C;
+  --bg-elevated: #0D1014;
+  --card: #111418;
+  --border: #1E2329;
+  --border-light: #2A323A;
+  --text: #F2F5FA;
+  --text-muted: #8B95A5;
+  --accent: #7C8B9F;
+  --accent-light: #9AABB8;
+  --gradient-start: #7A8B9F;
+  --gradient-end: #B4C4D4;
+  --success: #3FB950;
+  --shadow-color: rgba(124, 139, 159, 0.15);
 }
 
-*{margin:0;padding:0;box-sizing:border-box}
-
-body{
-font-family:Inter,sans-serif;
-background:var(--bg);
-color:var(--text);
-overflow-x:hidden;
-opacity:0;
-animation:fade 1s forwards;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@keyframes fade{to{opacity:1}}
-
-.background,
-.gradient1,
-.gradient2{
-position:fixed;
-pointer-events:none;
+html {
+  scroll-behavior: smooth;
 }
 
-.gradient1{
-width:80vw;
-height:80vw;
-top:-20vw;
-right:-20vw;
-background:radial-gradient(circle,rgba(154,165,177,.08),transparent);
-filter:blur(60px);
-animation:float 30s infinite;
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  opacity: 0;
+  animation: pageLoad 0.8s ease-out forwards;
 }
 
-.gradient2{
-width:80vw;
-height:80vw;
-bottom:-20vw;
-left:-20vw;
-background:radial-gradient(circle,rgba(45,55,72,.15),transparent);
-filter:blur(60px);
-animation:float 25s infinite reverse;
+@keyframes pageLoad {
+  to { opacity: 1; }
 }
 
-@keyframes float{
-0%,100%{transform:translate(0,0)}
-50%{transform:translate(40px,40px)}
+.cursor-glow {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 139, 159, 0.08), transparent 60%);
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  transition: opacity 0.3s;
 }
 
-/* HERO */
-
-.hero{
-max-width:1400px;
-margin:auto;
-padding:120px 40px 40px;
-display:grid;
-grid-template-columns:1.1fr .9fr;
-gap:60px;
-align-items:center;
+.bg-gradient-1 {
+  position: fixed;
+  top: -30%;
+  right: -20%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(circle, rgba(122, 139, 159, 0.06), transparent 50%);
+  filter: blur(80px);
+  animation: float1 25s ease-in-out infinite;
+  pointer-events: none;
 }
 
-.hero-image{
-width:340px;
-border-radius:30px;
-border:1px solid var(--border);
-padding:10px;
-background:rgba(17,20,23,.5);
-transition:all .5s var(--ease);
+.bg-gradient-2 {
+  position: fixed;
+  bottom: -30%;
+  left: -20%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(45, 55, 72, 0.1), transparent 50%);
+  filter: blur(80px);
+  animation: float2 30s ease-in-out infinite reverse;
+  pointer-events: none;
 }
 
-.hero-image img{
-width:100%;
-border-radius:20px;
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  opacity: 0.4;
 }
 
-.hero-image:hover{
-transform:scale(1.05);
-box-shadow:0 40px 60px -10px rgba(154,165,177,.4);
+@keyframes float1 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-30px, 30px) rotate(5deg); }
 }
 
-h1{
-font-size:clamp(3rem,6vw,5rem);
-font-weight:300;
-background:linear-gradient(135deg,#F0F4FA,#A0AEC0);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+@keyframes float2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(40px, -40px); }
 }
 
-.subtitle{
-max-width:520px;
-margin-top:15px;
-color:var(--muted);
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 1.25rem 2rem;
+  background: rgba(7, 9, 12, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid transparent;
+  transition: all 0.4s ease;
 }
 
-.specialty{
-display:inline-flex;
-gap:15px;
-margin:20px 0;
-padding:8px 18px;
-border-radius:999px;
-border:1px solid var(--border);
-background:rgba(17,20,23,.5);
-font-size:14px;
+.nav.scrolled {
+  border-bottom-color: var(--border);
+  padding: 0.9rem 2rem;
 }
 
-/* BUTTONS */
-
-.buttons{
-display:flex;
-gap:14px;
-margin-top:25px;
-flex-wrap:wrap;
+.nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.btn{
-position:relative;
-padding:12px 26px;
-border-radius:999px;
-border:1px solid var(--border);
-background:linear-gradient(135deg,rgba(17,20,23,.9),rgba(17,20,23,.5));
-text-decoration:none;
-color:white;
-font-weight:500;
-cursor:pointer;
-overflow:hidden;
-transition:.35s var(--ease);
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
 }
 
-.btn:before{
-content:"";
-position:absolute;
-top:0;
-left:-120%;
-width:120%;
-height:100%;
-background:linear-gradient(120deg,transparent,rgba(255,255,255,.3),transparent);
-transition:.7s;
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
 }
 
-.btn:hover:before{
-left:120%;
+.nav-link {
+  padding: 0.6rem 1.2rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.btn:hover{
-transform:translateY(-4px) scale(1.04);
-border-color:var(--accent);
-box-shadow:0 10px 40px rgba(154,165,177,.25);
-background:linear-gradient(135deg,rgba(154,165,177,.15),rgba(45,55,72,.4));
+.nav-link:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.btn:active{
-transform:scale(.95);
+.nav-link.active {
+  color: var(--text);
 }
 
-/* FEATURED */
-
-.section-title{
-text-align:center;
-margin:80px 0 20px;
-font-size:2rem;
-font-weight:300;
-background:linear-gradient(135deg,var(--accent),#A0AEC0);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
 }
 
-.videos{
-max-width:1200px;
-margin:auto;
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:30px;
-padding:20px;
+.nav-cta {
+  padding: 0.65rem 1.6rem;
+  background: linear-gradient(135deg, rgba(124, 139, 159, 0.15), rgba(124, 139, 159, 0.05));
+  border: 1px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.video{
-background:rgba(17,20,23,.6);
-border-radius:20px;
-border:1px solid var(--border);
-overflow:hidden;
-transition:.4s var(--ease);
+.nav-cta:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px -10px var(--shadow-color);
 }
 
-.video:hover{
-transform:translateY(-10px);
-border-color:var(--accent);
-box-shadow:0 30px 60px -20px rgba(154,165,177,.4);
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 8rem 2rem 6rem;
+  position: relative;
 }
 
-.video iframe{
-width:100%;
-height:220px;
-border:none;
+.hero-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 5rem;
+  align-items: center;
 }
 
-.video-info{
-padding:18px;
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(124, 139, 159, 0.1);
+  border: 1px solid rgba(124, 139, 159, 0.2);
+  border-radius: 50px;
+  font-size: 0.8rem;
+  color: var(--accent-light);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.2s ease-out forwards;
 }
 
-.video-title{
-margin-bottom:6px;
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
 }
 
-.video-desc{
-font-size:.9rem;
-color:var(--muted);
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.3); }
 }
 
-/* STATS */
-
-.stats{
-max-width:1000px;
-margin:80px auto;
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:25px;
-text-align:center;
+.hero-title {
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.3s ease-out forwards;
 }
 
-.stat{
-padding:25px;
-border-radius:20px;
-border:1px solid var(--border);
-background:rgba(17,20,23,.5);
-transition:.4s;
+.hero-title .gradient {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.stat:hover{
-transform:translateY(-10px);
-border-color:var(--accent);
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 520px;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.4s ease-out forwards;
 }
 
-.stat-num{
-font-size:2.5rem;
-margin-bottom:10px;
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.5s ease-out forwards;
 }
 
-.stat-label{
-font-size:.9rem;
-color:var(--muted);
-letter-spacing:2px;
+.tag {
+  padding: 0.5rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: all 0.3s ease;
 }
 
-/* MOBILE */
-
-@media(max-width:900px){
-
-.hero{
-grid-template-columns:1fr;
-text-align:center;
+.tag:hover {
+  border-color: var(--border-light);
+  color: var(--text);
+  transform: translateY(-2px);
 }
 
-.videos{
-grid-template-columns:1fr;
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.6s ease-out forwards;
 }
 
-.stats{
-grid-template-columns:1fr;
+.btn {
+  padding: 0.9rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #687285);
+  color: white;
+  box-shadow: 0 4px 20px rgba(124, 139, 159, 0.25);
 }
 
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(124, 139, 159, 0.3);
+}
+
+.btn-secondary {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  border-color: var(--border-light);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  opacity: 0;
+  animation: fadeLeft 1s 0.4s ease-out forwards;
+}
+
+.hero-image-container {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+}
+
+.hero-image {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.5);
+  transition: all 0.5s ease;
+}
+
+.hero-image-container:hover .hero-image {
+  transform: scale(1.02) rotate(1deg);
+  box-shadow: 0 40px 100px -20px rgba(124, 139, 159, 0.2);
+}
+
+.hero-image-frame {
+  position: absolute;
+  inset: -12px;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.hero-image-glow {
+  position: absolute;
+  inset: -50px;
+  background: radial-gradient(circle, rgba(124, 139, 159, 0.15), transparent 60%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.section {
+  padding: 6rem 2rem;
+  position: relative;
+}
+
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.section-title .gradient {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-desc {
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.featured-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.featured-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.featured-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--border-light);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.4);
+}
+
+.featured-video {
+  position: relative;
+  padding-bottom: 56.25%;
+}
+
+.featured-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.featured-content {
+  padding: 1.25rem;
+}
+
+.featured-card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.featured-card-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.featured-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.featured-tag {
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: rgba(124, 139, 159, 0.1);
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+}
+
+.featured-link {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.featured-link:hover {
+  color: var(--text);
+}
+
+.stats {
+  background: var(--bg-elevated);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 2rem 1rem;
+  transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-5px);
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.services-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.service-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+.service-card:hover::before {
+  transform: scaleX(1);
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--border-light);
+  box-shadow: 0 25px 50px -20px rgba(0, 0, 0, 0.4);
+}
+
+.service-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.service-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.service-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.footer {
+  background: var(--bg-elevated);
+  border-top: 1px solid var(--border);
+  padding: 4rem 2rem 2rem;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-brand {
+  max-width: 300px;
+}
+
+.footer-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+
+.footer-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.footer-column h4 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 1.2rem;
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 0.7rem;
+}
+
+.footer-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: var(--text);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.footer-copyright {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.footer-socials {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-link {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover {
+  border-color: var(--border-light);
+  color: var(--text);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 1100px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-tags {
+    justify-content: center;
+  }
+
+  .hero-visual {
+    order: -1;
+  }
+
+  .hero-image-container {
+    max-width: 300px;
+  }
+
+  .featured-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .services-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    padding: 1rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hero {
+    padding: 6rem 1rem 4rem;
+  }
+
+  .section {
+    padding: 4rem 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
 </style>
 </head>
 
 <body>
-<!-- Asegurar que la página siempre inicie arriba del todo -->
 <script>
   window.history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
 </script>
 
-<div class="gradient1"></div>
-<div class="gradient2"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="bg-grid"></div>
+<div class="bg-gradient-1"></div>
+<div class="bg-gradient-2"></div>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Relighted</a>
+    <div class="nav-links">
+      <a href="/" class="nav-link active">Home</a>
+      <a href="/animations" class="nav-link">Animations</a>
+      <a href="/information" class="nav-link">About</a>
+      <a href="/prices" class="nav-link">Pricing</a>
+    </div>
+    <a href="https://discord.com/users/741361076788133918" target="_blank" class="nav-cta">Contact</a>
+  </div>
+</nav>
 
 <section class="hero">
-
-<div>
-
-<h1>Relighted</h1>
-
-<div class="specialty">
-<span>● Roblox Studio</span>
-<span>● 1+ Year Experience</span>
-<span>● Blender</span>
-</div>
-
-<p class="subtitle">
-Relighted, a Roblox Studio animator using Blender to deliver quality and efficiency to my clients. Join the Discord server to contact me.
-</p>
-
-<div class="buttons">
-
-<a href="https://discord.com/users/741361076788133918" target="_blank" class="btn">
-Discord
-</a>
-
-<a href="/animations" class="btn">
-Animations
-</a>
-
-<a href="/information" class="btn">
-Info
-</a>
-
-</div>
-
-</div>
-
-<div class="hero-image" id="photo">
-<img src="https://i.imgur.com/pvvtE36.png">
-</div>
-
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Available for commissions
+      </div>
+      <h1 class="hero-title">
+        Crafting <span class="gradient">Motion</span> That Tells Stories
+      </h1>
+      <p class="hero-subtitle">
+        Professional Roblox animator specializing in cinematic cutscenes,
+        dynamic action sequences, and immersive character animations.
+        Bringing your vision to life through fluid motion.
+      </p>
+      <div class="hero-tags">
+        <span class="tag">Roblox Studio</span>
+        <span class="tag">Blender</span>
+        <span class="tag">1+ Years Experience</span>
+        <span class="tag">Cinematic</span>
+      </div>
+      <div class="hero-buttons">
+        <a href="https://discord.com/users/741361076788133918" target="_blank" class="btn btn-primary">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.176 2.419 0 1.333-.956 2.418-2.176 2.418z"/></svg>
+          Contact on Discord
+        </a>
+        <a href="/animations" class="btn btn-secondary">View Portfolio</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-image-container" id="photoContainer">
+        <div class="hero-image-glow"></div>
+        <div class="hero-image-frame"></div>
+        <img src="https://i.imgur.com/pvvtE36.png" alt="Relighted" class="hero-image" id="photo">
+      </div>
+    </div>
+  </div>
 </section>
 
-<h2 class="section-title">Featured Work</h2>
+<section class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-label">Portfolio</span>
+      <h2 class="section-title">Featured <span class="gradient">Animations</span></h2>
+      <p class="section-desc">A selection of my best work showcasing dynamic movement, cinematic sequences, and attention to detail.</p>
+    </div>
+    <div class="featured-grid">
+      <div class="featured-card" data-animate>
+        <div class="featured-video">
+          <iframe src="https://www.youtube.com/embed/kR0Cv6524mM" loading="lazy" allowfullscreen></iframe>
+        </div>
+        <div class="featured-content">
+          <h3 class="featured-card-title">Nagi Goal vs U20</h3>
+          <p class="featured-card-desc">Instantly kill it..</p>
+          <div class="featured-footer">
+            <span class="featured-tag">Cinematic</span>
+            <a href="https://youtu.be/kR0Cv6524mM" target="_blank" class="featured-link">Watch</a>
+          </div>
+        </div>
+      </div>
+      <div class="featured-card" data-animate>
+        <div class="featured-video">
+          <iframe src="https://www.youtube.com/embed/TB9BlAUvUa8" loading="lazy" allowfullscreen></iframe>
+        </div>
+        <div class="featured-content">
+          <h3 class="featured-card-title">Two Gun Volley</h3>
+          <p class="featured-card-desc">A new invention here and now...</p>
+          <div class="featured-footer">
+            <span class="featured-tag">Action</span>
+            <a href="https://youtu.be/TB9BlAUvUa8" target="_blank" class="featured-link">Watch</a>
+          </div>
+        </div>
+      </div>
+      <div class="featured-card" data-animate>
+        <div class="featured-video">
+          <iframe src="https://www.youtube.com/embed/Sm2Wrro0zzs" loading="lazy" allowfullscreen></iframe>
+        </div>
+        <div class="featured-content">
+          <h3 class="featured-card-title">Street-Soccer Style</h3>
+          <p class="featured-card-desc">I'm running out of time..</p>
+          <div class="featured-footer">
+            <span class="featured-tag">Sports</span>
+            <a href="https://youtu.be/Sm2Wrro0zzs" target="_blank" class="featured-link">Watch</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<div class="videos">
+<section class="section stats">
+  <div class="section-inner">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-value">50+</div>
+        <div class="stat-label">Projects</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">1+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">100%</div>
+        <div class="stat-label">Satisfaction</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">24h</div>
+        <div class="stat-label">Response Time</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<div class="video">
-<iframe src="https://www.youtube.com/embed/kR0Cv6524mM"></iframe>
-<div class="video-info">
-<div class="video-title">Nagi Goal vs U20</div>
-<div class="video-desc">Instantly kill it..</div>
-</div>
-</div>
+<section class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-label">Services</span>
+      <h2 class="section-title">What I <span class="gradient">Offer</span></h2>
+      <p class="section-desc">Professional animation services tailored to your project's needs.</p>
+    </div>
+    <div class="services-preview">
+      <div class="service-card">
+        <div class="service-icon">🎬</div>
+        <h3 class="service-title">Cinematic Cutscenes</h3>
+        <p class="service-desc">Story-driven animations with dramatic timing, camera work, and emotional depth that elevate your narrative.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚔️</div>
+        <h3 class="service-title">Action Sequences</h3>
+        <p class="service-desc">Dynamic combat, choreographed movements, and impactful animations for intense gameplay moments.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">👤</div>
+        <h3 class="service-title">Character Animation</h3>
+        <p class="service-desc">Walk cycles, idle animations, emotes, and full character motion sets with personality and polish.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-<div class="video">
-<iframe src="https://www.youtube.com/embed/TB9BlAUvUa8"></iframe>
-<div class="video-info">
-<div class="video-title">Two Gun Volley</div>
-<div class="video-desc">A new invention here and now...</div>
-</div>
-</div>
-
-<div class="video">
-<iframe src="https://www.youtube.com/embed/Sm2Wrro0zzs"></iframe>
-<div class="video-info">
-<div class="video-title">Street-Soccer Style Dribbling</div>
-<div class="video-desc">I'm running out of time..</div>
-</div>
-</div>
-
-</div>
-
-<div class="stats">
-
-<div class="stat">
-<div class="stat-num">⭐</div>
-<div class="stat-label">Efficiency</div>
-</div>
-
-<div class="stat">
-<div class="stat-num">🔝</div>
-<div class="stat-label">Quality</div>
-</div>
-
-<div class="stat">
-<div class="stat-num">💨</div>
-<div class="stat-label">Fast</div>
-</div>
-
-</div>
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">Relighted</div>
+        <p class="footer-desc">Professional animator creating immersive experiences through fluid motion and cinematic storytelling.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/animations">Animations</a></li>
+          <li><a href="/information">About</a></li>
+          <li><a href="/prices">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Links</h4>
+        <ul class="footer-links">
+          <li><a href="https://www.youtube.com/@xRelighted" target="_blank">YouTube</a></li>
+          <li><a href="https://www.roblox.com/users/1696329236/profile" target="_blank">Roblox</a></li>
+          <li><a href="https://discord.com/users/741361076788133918" target="_blank">Discord</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Contact</h4>
+        <ul class="footer-links">
+          <li><a href="https://discord.com/users/741361076788133918" target="_blank">@xrelighted</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copyright">2024 Relighted. All rights reserved.</p>
+      <div class="footer-socials">
+        <a href="https://www.youtube.com/@xRelighted" target="_blank" class="social-link" aria-label="YouTube">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <a href="https://discord.com/users/741361076788133918" target="_blank" class="social-link" aria-label="Discord">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.176 2.419 0 1.333-.956 2.418-2.176 2.418z"/></svg>
+        </a>
+        <a href="https://www.roblox.com/users/1696329236/profile" target="_blank" class="social-link" aria-label="Roblox">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M5.152 0L0 18.848 18.848 24 24 5.152 5.152 0zm7.68 16.56l-5.392-1.44 1.44-5.392 5.392 1.44-1.44 5.392z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <script>
+const cursorGlow = document.getElementById('cursorGlow');
+document.addEventListener('mousemove', e => {
+  cursorGlow.style.left = e.clientX + 'px';
+  cursorGlow.style.top = e.clientY + 'px';
+});
 
-/* cursor glow */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+});
 
-const glow=document.createElement("div")
-glow.style.position="fixed"
-glow.style.width="300px"
-glow.style.height="300px"
-glow.style.pointerEvents="none"
-glow.style.borderRadius="50%"
-glow.style.background="radial-gradient(circle, rgba(154,165,177,.15), transparent 70%)"
-glow.style.transform="translate(-50%,-50%)"
-glow.style.zIndex="-1"
-document.body.appendChild(glow)
+const animateElements = document.querySelectorAll('[data-animate]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, index) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, index * 100);
+    }
+  });
+}, { threshold: 0.1 });
 
-document.addEventListener("mousemove",e=>{
-glow.style.left=e.clientX+"px"
-glow.style.top=e.clientY+"px"
-})
+animateElements.forEach(el => observer.observe(el));
 
-/* photo 3D effect */
-
-const photo=document.getElementById("photo")
-
-document.addEventListener("mousemove",e=>{
-let x=(window.innerWidth/2-e.clientX)/40
-let y=(window.innerHeight/2-e.clientY)/40
-photo.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`
-})
-
+const photoContainer = document.getElementById('photoContainer');
+document.addEventListener('mousemove', e => {
+  const x = (window.innerWidth / 2 - e.clientX) / 50;
+  const y = (window.innerHeight / 2 - e.clientY) / 50;
+  photoContainer.style.transform = `perspective(1000px) rotateY(${x * 0.5}deg) rotateX(${y * 0.5}deg)`;
+});
 </script>
-
 </body>
 </html>
